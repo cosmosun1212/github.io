@@ -14,7 +14,7 @@ tags: [C언어로 게임만들기, C언어, 게임개발, 더블버퍼링, 윈�
 
 
 
-\## 제발 `system("cls")` 좀 그만 써!
+## 제발 `system("cls")` 좀 그만 써!
 
 
 
@@ -30,7 +30,7 @@ C언어로 게임을 처음 만들 때 가장 많이 하는 실수가 있습니�
 
 
 
-\### 1. 더블 버퍼링이란?
+### 1. 더블 버퍼링이란?
 
 
 
@@ -38,9 +38,9 @@ C언어로 게임을 처음 만들 때 가장 많이 하는 실수가 있습니�
 
 
 
-1\.  \*\*화면 A:\*\* 사용자에게 보여주는 화면
+1.  \*\*화면 A:\*\* 사용자에게 보여주는 화면
 
-2\.  \*\*화면 B:\*\* 뒤에서 몰래 다음 장면을 그리는 화면
+2.  \*\*화면 B:\*\* 뒤에서 몰래 다음 장면을 그리는 화면
 
 
 
@@ -68,9 +68,9 @@ C언어로 게임을 처음 만들 때 가장 많이 하는 실수가 있습니�
 
 ```cpp
 
-\#pragma once
+#pragma once
 
-\#include <tchar.h>
+#include <tchar.h>
 
 
 
@@ -104,17 +104,17 @@ void SetColor(unsigned short color); // 색깔 바꾸기
 
 ```cpp
 
-\#include "ScreenBuffer.h"
+#include "ScreenBuffer.h"
 
-\#include <windows.h>
+#include <windows.h>
 
 
 
-static int g\_nScreenIndex;
+static int g_nScreenIndex;
 
-static HANDLE g\_hScreen\[2]; // 화면 2개 (Front, Back)
+static HANDLE g_hScreen\[2]; // 화면 2개 (Front, Back)
 
-static int g\_wColor = 0x0007; // 기본 색상: 흰색
+static int g_wColor = 0x0007; // 기본 색상: 흰색
 
 
 
@@ -122,49 +122,46 @@ void ScreenInit()
 
 {
 
-&nbsp;   // 1. 콘솔 창 크기 명령 (1차 시도)
+  // 1. 콘솔 창 크기 명령 (1차 시도)
 
-&nbsp;   system("mode con: cols=80 lines=25");
-
-
-
-&nbsp;   CONSOLE\_CURSOR\_INFO cci;
-
-&nbsp;   COORD size = { SCREEN\_WIDTH, SCREEN\_HEIGHT };
-
-&nbsp;   SMALL\_RECT rect = { 0, 0, SCREEN\_WIDTH - 1, SCREEN\_HEIGHT - 1 };
+   system("mode con: cols=80 lines=25");
 
 
 
-&nbsp;   // 2. 버퍼 2개 생성 (핵심!)
+   CONSOLE_CURSOR\_INFO cci;
 
-&nbsp;   g\_hScreen\[0] = CreateConsoleScreenBuffer(GENERIC\_READ | GENERIC\_WRITE, 0, NULL, CONSOLE\_TEXTMODE\_BUFFER, NULL);
+   COORD size = { SCREEN_WIDTH, SCREEN_HEIGHT };
 
-&nbsp;   g\_hScreen\[1] = CreateConsoleScreenBuffer(GENERIC\_READ | GENERIC\_WRITE, 0, NULL, CONSOLE\_TEXTMODE\_BUFFER, NULL);
-
-
-
-&nbsp;   // \[핵심] 3. 버퍼 크기와 윈도우 크기를 강제로 맞춤 (스크롤바 제거 \& 잔상 해결)
-
-&nbsp;   for (int i = 0; i < 2; i++)
-
-&nbsp;   {
-
-&nbsp;       SetConsoleScreenBufferSize(g\_hScreen\[i], size); // 버퍼 크기 고정
-
-&nbsp;       SetConsoleWindowInfo(g\_hScreen\[i], TRUE, \&rect); // 창 크기 고정
+   SMALL_RECT rect = { 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 };
 
 
 
-&nbsp;       // 커서(깜빡이는 밑줄) 숨기기
+   // 2. 버퍼 2개 생성 (핵심!)
 
-&nbsp;       cci.dwSize = 1;
+   g_hScreen[0] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+   g_hScreen[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 
-&nbsp;       cci.bVisible = FALSE;
 
-&nbsp;       SetConsoleCursorInfo(g\_hScreen\[i], \&cci);
 
-&nbsp;   }
+   // [핵심] 3. 버퍼 크기와 윈도우 크기를 강제로 맞춤 (스크롤바 제거 \& 잔상 해결)
+
+   for (int i = 0; i < 2; i++)
+   {
+       SetConsoleScreenBufferSize(g\_hScreen\[i], size); // 버퍼 크기 고정
+
+       SetConsoleWindowInfo(g\_hScreen\[i], TRUE, \&rect); // 창 크기 고정
+
+
+
+       // 커서(깜빡이는 밑줄) 숨기기
+
+       cci.dwSize = 1;
+
+       cci.bVisible = FALSE;
+
+       SetConsoleCursorInfo(g\_hScreen\[i], \&cci);
+
+  }
 
 }
 
@@ -174,11 +171,11 @@ void ScreenFlipping()
 
 {
 
-&nbsp;   Sleep(10); // 너무 빠르면 안 보이니까 살짝 대기
+   Sleep(10); // 너무 빠르면 안 보이니까 살짝 대기
 
-&nbsp;   SetConsoleActiveScreenBuffer(g\_hScreen\[g\_nScreenIndex]); // 보여주는 화면 교체
+   SetConsoleActiveScreenBuffer(g_hScreen[g_nScreenIndex]); // 보여주는 화면 교체
 
-&nbsp;   g\_nScreenIndex = !g\_nScreenIndex; // 0 -> 1, 1 -> 0 스위칭
+   g_nScreenIndex = !g_nScreenIndex; // 0 -> 1, 1 -> 0 스위칭
 
 }
 
@@ -188,17 +185,17 @@ void ScreenClear()
 
 {
 
-&nbsp;   COORD Coor = { 0, 0 };
+   COORD Coor = { 0, 0 };
 
-&nbsp;   DWORD dw;
+   DWORD dw;
 
-&nbsp;   // 화면 전체를 공백(' ')으로 채워서 지움
+   // 화면 전체를 공백(' ')으로 채워서 지움
 
-&nbsp;   FillConsoleOutputCharacter(g\_hScreen\[g\_nScreenIndex], ' ', 80 \* 25, Coor, \&dw);
+   FillConsoleOutputCharacter(g\_hScreen\[g\_nScreenIndex], ' ', 80 \* 25, Coor, \&dw);
 
-&nbsp;   // 색상 정보도 초기화
+   // 색상 정보도 초기화
 
-&nbsp;   FillConsoleOutputAttribute(g\_hScreen\[g\_nScreenIndex], 0x0007, 80 \* 25, Coor, \&dw);
+   FillConsoleOutputAttribute(g\_hScreen\[g\_nScreenIndex], 0x0007, 80 \* 25, Coor, \&dw);
 
 }
 
@@ -208,33 +205,31 @@ void ScreenRelease()
 
 {
 
-&nbsp;   CloseHandle(g\_hScreen\[0]);
+  CloseHandle(g_hScreen\[0]);
 
-&nbsp;   CloseHandle(g\_hScreen\[1]);
+  CloseHandle(g_hScreen\[1]);
 
 }
 
 
 
-void ScreenPrint(int x, int y, const wchar\_t\* string)
+void ScreenPrint(int x, int y, const wchar_t* string)
 
 {
 
-&nbsp;   DWORD dw;
+   DWORD dw;
 
-&nbsp;   COORD CursorPosition = { x, y };
+   COORD CursorPosition = { x, y };
 
-&nbsp;   int len = (DWORD)wcslen(string); // 문자열 길이 계산
+   int len = (DWORD)wcslen(string); // 문자열 길이 계산
 
-&nbsp;   
+ // 커서 위치를 잡고 글자를 씀
 
-&nbsp;   // 커서 위치를 잡고 글자를 씀
+   SetConsoleCursorPosition(g_hScreen[g_nScreenIndex], CursorPosition);
 
-&nbsp;   SetConsoleCursorPosition(g\_hScreen\[g\_nScreenIndex], CursorPosition);
+   WriteConsoleOutputCharacterW(g_hScreen[g_nScreenIndex], string, len, CursorPosition, &dw);
 
-&nbsp;   WriteConsoleOutputCharacterW(g\_hScreen\[g\_nScreenIndex], string, len, CursorPosition, \&dw);
-
-&nbsp;   FillConsoleOutputAttribute(g\_hScreen\[g\_nScreenIndex], g\_wColor, len, CursorPosition, \&dw);
+  FillConsoleOutputAttribute(g_hScreen[g_nScreenIndex], g_wColor, len, CursorPosition, &dw);
 
 }
 
@@ -243,8 +238,7 @@ void ScreenPrint(int x, int y, const wchar\_t\* string)
 void SetColor(unsigned short color)
 
 {
-
-&nbsp;   g\_wColor = color;
+   g_wColor = color;
 
 }
 
@@ -252,7 +246,7 @@ void SetColor(unsigned short color)
 
 
 
-\### 2. 게임 루프에 적용하기 (사용법)
+### 2. 게임 루프에 적용하기 (사용법)
 
 지난 시간에 만든 \*\*게임 루프(main.c)\*\*에 이 기능을 연결해 봅시다. 
 
@@ -278,7 +272,7 @@ void SetColor(unsigned short color)
 
 
 
-\### 마무리: 이제 진짜 게임 화면 같습니다!
+### 마무리: 이제 진짜 게임 화면 같습니다!
 
 
 
