@@ -6,6 +6,15 @@ baseurl: ""
 # 테마 설정 (Minimal Mistakes 원격 연결)
 remote_theme: "mmistakes/minimal-mistakes"
 minimal_mistakes_skin: "default" # 혹은 "air", "contrast", "dark" 등 선택 가능
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      sidebar:
+        nav: "main"
 
 # 빌드 설정
 plugins:
