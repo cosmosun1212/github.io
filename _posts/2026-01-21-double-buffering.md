@@ -4,7 +4,7 @@ layout: post
 
 title:  "[C언어로 게임만들기] 02. 눈 아픈 깜빡임은 이제 그만! 더블 버퍼링(Double Buffering) 마법"
 
-date:   2026-01-23 10:00:00 +0900
+date:   2026-01-21 16:30:00 +0900
 
 categories: [C언어로 게임만들기]
 
