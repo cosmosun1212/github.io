@@ -1,0 +1,13 @@
+# 블로그 기본 설정
+title: "Dj__Kim's 프로그래밍 학습 블로그"
+url: "https://cosmosun1212.github.io"
+baseurl: ""
+
+# 테마 설정 (Minimal Mistakes 원격 연결)
+remote_theme: "mmistakes/minimal-mistakes"
+minimal_mistakes_skin: "default" # 혹은 "air", "contrast", "dark" 등 선택 가능
+
+# 빌드 설정
+plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
