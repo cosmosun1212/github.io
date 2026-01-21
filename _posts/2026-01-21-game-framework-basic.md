@@ -16,7 +16,7 @@ tags: [C언어, 게임개발, 유니티, GameLoop, 구조]
 
 우리가 앞으로 채워나갈 게임의 뼈대입니다. `main` 함수 안에 있는 `while(1)`이 바로 게임의 심장입니다.
 
-```c
+```cpp
 int main(void)
 {
     // [1] 초기화 단계
@@ -91,7 +91,7 @@ int main(void)
 
 해결: **'지난 프레임에서 이번 프레임까지 걸린 시간(Delta Time)'**을 계산합니다. 이 값을 이동 거리에 곱해주면, 어떤 성능의 컴퓨터에서도 캐릭터는 똑같은 속도로 움직입니다.
 
-** Unity: Time.deltaTime ** 
+***Unity: Time.deltaTime*** 
 
 #### [3] 귀를 기울이다: ProcessInput()
 사용자의 명령을 듣는 단계입니다.
@@ -100,21 +100,21 @@ int main(void)
 
 이유: 게임 로직(Update)이 시작되기 전에 미리 입력을 받아놔야, 로직 중간에 입력이 바뀌거나 씹히는 현상을 방지할 수 있습니다.
 
-** Unity: Input.GetKeyDown, Input.GetAxis ** 
+***Unity: Input.GetKeyDown, Input.GetAxis***
 
 #### [4] 물리 법칙의 시간: FixedUpdate()
 이곳은 시간이 일정하게 흐르는 공간입니다.
 
 왜 while문일까?: 화면 그리기(Update)는 컴퓨터가 느려지면 같이 느려질 수 있습니다. 하지만 물리 법칙(충돌, 중력)은 렉이 걸린다고 벽을 뚫고 지나가면 안 됩니다. 그래서 밀린 물리 계산이 있다면 반복문을 돌려서라도 강제로 횟수를 채워서 처리합니다.
 
-** Unity: void FixedUpdate() - 물리 엔진(Rigidbody)은 반드시 여기서 다뤄야 합니다. ** 
+***Unity: void FixedUpdate() - 물리 엔진(Rigidbody)은 반드시 여기서 다뤄야 합니다.***
 
 #### [5] 게임의 본방: Update()
 여러분이 작성할 게임 코드의 90%가 들어가는 곳입니다.
 
 역할: 매 프레임마다 반복해서 실행해야 하는 일들을 처리합니다. (캐릭터 이동, 총알 발사, 스킬 쿨타임 체크 등)
 
-**  Unity: void Update() ** 
+***Unity: void Update()***
 
 #### [6] 뒤수습 전문가: LateUpdate()
 모든 Update가 끝난 뒤에 "혹시 빠뜨린 거 없나?" 하고 마지막으로 실행됩니다.
@@ -123,16 +123,16 @@ int main(void)
 
 주인공이 Update에서 이동을 마친 뒤에, 카메라가 LateUpdate에서 주인공 위치로 따라가야 화면이 덜덜 떨리지 않고 부드럽게 따라갑니다. 주인공보다 카메라가 먼저 움직이면 안 되니까요.
 
-** Unity: void LateUpdate() ** 
+***Unity: void LateUpdate()***
 
 #### [7] 화가의 시간: Render()
 모든 계산이 끝났으니 이제 모니터에 결과를 보여줍니다.
 
-** PreRender ** : 칠판(버퍼)을 깨끗이 지웁니다.
+**PreRender** : 칠판(버퍼)을 깨끗이 지웁니다.
 
-** Render ** : 보이지 않는 뒷장(Back Buffer)에 그림을 그립니다.
+**Render** : 보이지 않는 뒷장(Back Buffer)에 그림을 그립니다.
 
-** PostRender ** : 다 그린 그림을 모니터 앞으로 휙! 하고 꺼내 놓습니다. (더블 버퍼링 기법)
+**PostRender** : 다 그린 그림을 모니터 앞으로 휙! 하고 꺼내 놓습니다. (더블 버퍼링 기법)
 
 ### 마무리
 결국 유니티 같은 거창한 게임 엔진도 내부를 들여다보면, 우리가 오늘 작성한 이 C언어 while 루프가 쉴 새 없이 돌아가고 있는 것입니다.
